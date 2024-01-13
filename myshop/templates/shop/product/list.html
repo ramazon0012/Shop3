@@ -1,0 +1,46 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+{% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+<div id="sidebar" style="float: left;
+width: 320px;
+margin: 10px;">
+    <h3>Categories</h3>
+    <ul>
+        <ol {% if not category %}class="selected" {% endif %} style="margin-left: -4rem;">
+            <a href="{% url "shop:product_list" %}">
+                <button style="width: 300px;height: 35px;border-radius: 12px;border-color: white;border-style: hidden; background-color: #ADD8E6;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: medium;">All</button>
+            </a>
+        </ol>
+        {% for c in categories %}
+        <ol {% if category.slug != c.slug %}{% else %} class="selected" {% endif %} style="margin-left: -4rem; margin-top: 1rem;">
+            <a href="{{ c.get_absolute_url }}">
+                <button style="width: 300px;height: 35px;border-radius: 12px;border-color: white;border-style: hidden;">{{ c.name }}</button>
+            </a>
+        </ol>
+        {% endfor %}
+    </ul>
+</div>
+<div id="main" class="product-list">
+    <h2 style="font-family: monospace;width: 500px;margin-left: 23.5rem;font-size: xx-large;">{% if category %}{{ category.name }}{% else %}Products
+        {% endif %}</h2>
+        <div style="float: left;
+        width: 300px;
+        display: flex;">
+        {% for product in products %}
+        <div class="item" style="margin-left: 2rem;margin-top: 1.5rem;">
+            <a href="{{ product.get_absolute_url }}">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% 
+    static " img/no_image.png" %}{% endif %}" style="width: 375px; height: 250px;border-radius: 8px;" data-tilt>
+            </a>
+            <br>
+            <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+            <br>
+            ${{ product.price }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
